@@ -16,10 +16,3 @@ create table orders
     amount       int,
     foreign key (customer_id) references customers (id)
 );
-
-select o.product_name
-from orders o
-         join (select *
-               from customers
-               where upper(name) = NOT NULL) c
-              on o.customer_id = c.id;

@@ -9,14 +9,14 @@ import java.util.List;
 
 @Controller
 public class DAO_controller {
-    private final DAO_Repository repository;
+    private final CustomersRepository repository;
 
-    public DAO_controller(DAO_Repository repository) {
+    public DAO_controller(CustomersRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping("/products/fetch-product")
     public List<String> getListProductName(@RequestParam("name") String name) throws IOException {
-        return DAO_Repository.getProductName(name);
+        return repository.getProductName(name);
     }
 }

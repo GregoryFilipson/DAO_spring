@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class DAO_Repository {
+public class CustomersRepository {
     static String scriptName = "src/main/resources/script.sql";
 
     @Autowired
-    private static NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public static String read(String scriptName) throws IOException {
+    public String read(String scriptName) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(scriptName))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -30,7 +30,7 @@ public class DAO_Repository {
         }
     }
 
-    public static List<String> getProductName(String name) throws IOException {
+    public List<String> getProductName(String name) throws IOException {
         String product_name = read(scriptName);
         return namedParameterJdbcTemplate.queryForList(product_name,
                 Collections.singletonMap("name", name), String.class);
