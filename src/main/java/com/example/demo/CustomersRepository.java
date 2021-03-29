@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +13,15 @@ import java.util.List;
 
 @Repository
 public class CustomersRepository {
-    static String scriptName = "src/main/resources/script.sql";
+    final static String scriptName = "src/main/resources/script.sql";
+
+
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    public CustomersRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
 
     public String read(String scriptName) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(scriptName))) {
@@ -33,6 +39,6 @@ public class CustomersRepository {
     public List<String> getProductName(String name) throws IOException {
         String product_name = read(scriptName);
         return namedParameterJdbcTemplate.queryForList(product_name,
-                Collections.singletonMap("name", name), String.class);
+                new MapSqlParameterSource("name", name), String.class);
     }
 }
